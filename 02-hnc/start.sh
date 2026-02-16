@@ -2,6 +2,18 @@
 
 set -e
 
+countdown() {
+    local seconds=$1
+    local message=${2:-"ќжидание"}
+    
+    while [ $seconds -gt 0 ]; do
+        echo -ne "${message}: ${seconds}s remaining...\r"
+        sleep 1
+        ((seconds--))
+    done
+    echo -e "${message}: done!          \r"
+}
+
 SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 cd "$SCRIPT_DIR"
 
@@ -15,7 +27,7 @@ echo "=== Waiting for HNC to be ready ==="
 kubectl wait --for=condition=available --timeout=120s deployment/hnc-controller-manager -n hnc-system
 
 echo "=== Waiting for webhook to be ready (30s) ==="
-sleep 30
+countdown 30
 
 echo ""
 echo "=== Creating parent namespace ==="
