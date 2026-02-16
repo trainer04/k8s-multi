@@ -37,7 +37,7 @@ echo "=== Creating child namespaces ==="
 kubectl apply -f child-namespaces.yaml
 
 echo "=== Waiting for child namespaces to be created ==="
-sleep 5
+countdown 10
 
 echo "=== Applying RBAC (will be propagated to children) ==="
 kubectl apply -f rbac.yaml
@@ -45,7 +45,7 @@ kubectl apply -f rbac.yaml
 echo "=== Applying NetworkPolicy (will be propagated to children) ==="
 kubectl apply -f network-policy.yaml
 
-sleep 3
+countdown 5
 
 echo ""
 echo "=== Verification: Check hierarchy ==="
