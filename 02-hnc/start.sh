@@ -14,6 +14,9 @@ kubectl apply -f https://github.com/kubernetes-retired/hierarchical-namespaces/r
 echo "=== Waiting for HNC to be ready ==="
 kubectl wait --for=condition=available --timeout=120s deployment/hnc-controller-manager -n hnc-system
 
+echo "=== Waiting for webhook to be ready (30s) ==="
+sleep 30
+
 echo ""
 echo "=== Creating parent namespace ==="
 kubectl apply -f parent-namespace.yaml
