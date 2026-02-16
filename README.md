@@ -1,6 +1,6 @@
 # Примеры Multi-Tenancy в Kubernetes
 
-Практические примеры решений multi-tenancy из презентации "Kubernetes Multi-Tenancy: изоляция команд в одном кластере".
+Практические примеры решений multi-tenancy из презентации "Multi-tenancy и защита в многоарендных кластерах"
 
 ## Структура примеров
 
@@ -102,7 +102,9 @@ cd examples/03-capsule
 
 ## Полезные ссылки
 
-- [Capsule Documentation](https://capsule.clastix.io/docs)
+- [Capsule Documentation](https://projectcapsule.dev/docs/)
+- [Capsule GitHub Repo](https://github.com/projectcapsule)
 - [vCluster Documentation](https://www.vcluster.com/docs)
+- [vCluster GitHub Repo](https://github.com/loft-sh/vcluster)
 - [HNC Documentation](https://github.com/kubernetes-sigs/hierarchical-namespaces)
 - [Kubernetes Multi-Tenancy SIG](https://github.com/kubernetes-sigs/multi-tenancy)
