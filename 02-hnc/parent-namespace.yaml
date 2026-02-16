@@ -1,0 +1,7 @@
+apiVersion: v1
+kind: Namespace
+metadata:
+  name: analytics
+  labels:
+    team: analytics
+    hnc.x-k8s.io/included-namespace: "true"

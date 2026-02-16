@@ -1,0 +1,32 @@
+apiVersion: rbac.authorization.k8s.io/v1
+kind: Role
+metadata:
+  name: data-scientist
+  namespace: analytics
+  labels:
+    # HNC будет пропагировать этот Role в дочерние namespace
+    hnc.x-k8s.io/propagate: "true"
+rules:
+- apiGroups: ["", "apps", "batch"]
+  resources: ["pods", "services", "deployments", "jobs", "configmaps"]
+  verbs: ["get", "list", "watch", "create", "update", "patch", "delete"]
+- apiGroups: [""]
+  resources: ["pods/log", "pods/exec"]
+  verbs: ["get", "create"]
+
+---
+apiVersion: rbac.authorization.k8s.io/v1
+kind: RoleBinding
+metadata:
+  name: data-scientist-binding
+  namespace: analytics
+  labels:
+    hnc.x-k8s.io/propagate: "true"
+subjects:
+- kind: Group
+  name: analytics-team
+  apiGroup: rbac.authorization.k8s.io
+roleRef:
+  kind: Role
+  name: data-scientist
+  apiGroup: rbac.authorization.k8s.io

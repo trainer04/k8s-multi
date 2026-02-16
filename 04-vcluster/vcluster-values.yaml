@@ -1,0 +1,25 @@
+# vCluster configuration for Core Banking team
+# Using minimal configuration compatible with latest vCluster
+
+# Control plane configuration
+controlPlane:
+  # CoreDNS inside vCluster
+  coredns:
+    enabled: true
+
+  # Backing store configuration
+  backingStore:
+    etcd:
+      deploy:
+        enabled: true
+        statefulSet:
+          resources:
+            requests:
+              cpu: 20m
+              memory: 150Mi
+
+# Sync configuration (new schema)
+sync:
+  toHost:
+    pods:
+      enabled: true

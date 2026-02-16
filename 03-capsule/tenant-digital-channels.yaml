@@ -1,0 +1,90 @@
+apiVersion: capsule.clastix.io/v1beta2
+kind: Tenant
+metadata:
+  name: digital-channels
+spec:
+  # Владельцы tenant'а
+  owners:
+  - name: digital-team
+    kind: Group
+
+  # Лимит на количество namespace'ов
+  namespaceOptions:
+    quota: 5
+
+  # Квоты на весь tenant (сумма по всем namespace)
+  resourceQuotas:
+    scope: Tenant
+    items:
+    - hard:
+        limits.cpu: "16"
+        limits.memory: "32Gi"
+        requests.cpu: "8"
+        requests.memory: "16Gi"
+        pods: "100"
+
+  # LimitRange для всех namespace
+  limitRanges:
+    items:
+    - limits:
+      - max:
+          cpu: "2"
+          memory: "4Gi"
+        min:
+          cpu: "50m"
+          memory: "64Mi"
+        default:
+          cpu: "500m"
+          memory: "512Mi"
+        defaultRequest:
+          cpu: "100m"
+          memory: "128Mi"
+        type: Container
+
+  # Разрешённые Storage Classes
+  storageClasses:
+    allowed:
+    - standard
+    - fast-ssd
+
+  # Ingress настройки
+  ingressOptions:
+    allowedClasses:
+      allowed:
+      - nginx
+    allowedHostnames:
+      allowedRegex: "^.*\\.digital\\.example\\.com$"
+
+  # Node Selector - свой пул нод
+  nodeSelector:
+    team: digital
+
+  # NetworkPolicy для изоляции
+  networkPolicies:
+    items:
+    - policyTypes:
+      - Ingress
+      - Egress
+      ingress:
+      # Разрешить трафик только внутри своего tenant'а
+      - from:
+        - namespaceSelector:
+            matchLabels:
+              capsule.clastix.io/tenant: digital-channels
+      egress:
+      # DNS
+      - to:
+        - namespaceSelector:
+            matchLabels:
+              kubernetes.io/metadata.name: kube-system
+        ports:
+        - protocol: UDP
+          port: 53
+      # Внешний интернет
+      - to:
+        - ipBlock:
+            cidr: 0.0.0.0/0
+            except:
+            - 10.0.0.0/8
+            - 172.16.0.0/12
+            - 192.168.0.0/16

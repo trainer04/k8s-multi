@@ -1,0 +1,19 @@
+apiVersion: hnc.x-k8s.io/v1alpha2
+kind: SubnamespaceAnchor
+metadata:
+  name: analytics-prod
+  namespace: analytics
+
+---
+apiVersion: hnc.x-k8s.io/v1alpha2
+kind: SubnamespaceAnchor
+metadata:
+  name: analytics-staging
+  namespace: analytics
+
+---
+apiVersion: hnc.x-k8s.io/v1alpha2
+kind: SubnamespaceAnchor
+metadata:
+  name: analytics-dev
+  namespace: analytics
