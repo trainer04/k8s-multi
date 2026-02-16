@@ -4,7 +4,7 @@ set -e
 
 countdown() {
     local seconds=$1
-    local message=${2:-"ќжидание"}
+    local message=${2:-"Waiting"}
     
     while [ $seconds -gt 0 ]; do
         echo -ne "${message}: ${seconds}s remaining...\r"
