@@ -2,8 +2,12 @@
 
 set -e
 
+SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
+
 echo "=== Deploying namespace with basic isolation ==="
 echo ""
+
+cd "$SCRIPT_DIR"
 
 # Apply manifests
 kubectl apply -f namespace.yaml
