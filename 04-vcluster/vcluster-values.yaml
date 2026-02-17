@@ -1,6 +1,6 @@
-# Use existing PVC for persistence
-persistence:
-  enabled: true
+# Storage configuration for the vcluster pod
+pod:
+  persistence: true
   existingClaim: vcluster-data
 
 # Basic sync configuration
