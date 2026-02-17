@@ -18,6 +18,7 @@ Capsule предоставляет полноценный multi-tenancy с ав�
 - `tenant-digital-channels.yaml` - Tenant с политиками
 - `tenant-analytics.yaml` - второй Tenant для сравнения
 - `test-pod.yaml` - тестовый под для проверки изоляции
+- `capsule-values.yaml`,`test-role.yaml` и `test-user.yaml` - файлы дополнительной конфигурации Capsule и создания проверочного пользователя
 
 ## Требования
 
