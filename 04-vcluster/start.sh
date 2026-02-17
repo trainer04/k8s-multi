@@ -23,7 +23,7 @@ echo "=== Waiting for PVC to be bound ==="
 for i in {1..30}; do
     PVC_STATUS=$(kubectl get pvc vcluster-data -n core-banking-vcluster -o jsonpath='{.status.phase}' 2>/dev/null || echo "Pending")
     if [ "$PVC_STATUS" == "Bound" ]; then
-        echo "? PVC is bound"
+        echo "PVC is bound"
         break
     fi
     echo "Waiting for PVC to be bound... (${i}/30)"
@@ -38,34 +38,16 @@ helm upgrade --install core-banking loft-sh/vcluster \
   --wait \
   --timeout 10m
 
-echo "=== Verification ==="
+echo "=== Verification: Check vCluster pvc and pods==="
 kubectl get pods,pvc -n core-banking-vcluster
-
-echo ""
-echo "=== Verification: Check vCluster pods ==="
-kubectl get pods -n core-banking-vcluster
-echo ""
 
 echo "=== Verification: Check vCluster service ==="
 kubectl get svc -n core-banking-vcluster
 echo ""
 
-echo "=== Test 1: vCluster creates virtual pods in host namespace ==="
-echo "Pods in core-banking-vcluster namespace:"
-kubectl get pods -n core-banking-vcluster
-echo ""
-
-echo "=== Test 2: Check vCluster isolation ==="
+echo "=== Check vCluster isolation ==="
 echo "vCluster has its own API server and control plane"
 kubectl logs -n core-banking-vcluster -l app=vcluster -c syncer --tail=10 | head -10
-echo ""
-
-echo "=== Test 3: Access vCluster (optional) ==="
-echo "To connect to vCluster, you can use port-forward:"
-echo ""
-echo "  kubectl port-forward -n core-banking-vcluster service/core-banking 8443:443 &"
-echo "  export KUBECONFIG=./vcluster-kubeconfig.yaml"
-echo "  kubectl --kubeconfig=./vcluster-kubeconfig.yaml get nodes"
 echo ""
 
 echo "=== Summary ==="
