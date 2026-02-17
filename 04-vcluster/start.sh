@@ -2,6 +2,21 @@
 
 set -e
 
+countdown() {
+    local seconds=$1
+    local message=${2:-"Waiting"}
+    
+    while [ $seconds -gt 0 ]; do
+        echo -ne "${message}: ${seconds}s remaining...\r"
+        sleep 1
+        ((seconds--))
+    done
+    echo -e "${message}: done!          \r"
+}
+
+SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
+cd "$SCRIPT_DIR"
+
 echo "=== Installing vCluster using Helm ==="
 
 # Add vCluster Helm repo
