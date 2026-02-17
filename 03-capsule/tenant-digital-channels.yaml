@@ -7,6 +7,15 @@ spec:
   owners:
   - name: digital-team
     kind: Group
+    clusterRoles:
+    - admin
+    - capsule-namespace-deleter
+
+  - name: capsule.clastix.io
+    kind: Group
+    clusterRoles:
+    - admin
+    - capsule-namespace-deleter
 
   # Лимит на количество namespace'ов
   namespaceOptions:
