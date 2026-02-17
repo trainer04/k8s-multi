@@ -19,12 +19,18 @@ echo "=== Installing vCluster using Helm ==="
 SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 cd "$SCRIPT_DIR"
 
+# Creating local-path storage
+kubectl apply -f https://raw.githubusercontent.com/rancher/local-path-provisioner/master/deploy/local-path-storage.yaml
+
 # Add vCluster Helm repo
 helm repo add loft-sh https://charts.loft.sh
 helm repo update
 
 # Create namespace
 kubectl create namespace core-banking-vcluster --dry-run=client -o yaml | kubectl apply -f -
+
+# Create PVC for etcd
+kubectl apply -f pvc-etcd.yaml
 
 # Install vCluster using Helm
 echo "=== Creating vCluster ==="
