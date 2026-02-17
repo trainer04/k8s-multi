@@ -1,4 +1,3 @@
-# vCluster configuration without persistent storage
 sync:
   toHost:
     pods:
@@ -13,16 +12,3 @@ sync:
       all: false
     persistentVolumeClaims:
       enabled: true
-
-embeddedEtcd:
-  enabled: true
-
-pod:
-  persistence: false
-  resources:
-    requests:
-      cpu: 200m
-      memory: 256Mi
-    limits:
-      cpu: 1
-      memory: 1Gi
