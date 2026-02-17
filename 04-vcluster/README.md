@@ -18,13 +18,14 @@ vCluster создаёт полноценный виртуальный Kubernetes
 - `vcluster-values.yaml` - конфигурация vCluster
 - `kafka-cluster.yaml` - пример Kafka кластера через Strimzi
 - `test-isolation.sh` - скрипт для проверки изоляции
+- `pvc-etcd.yaml` - скрипт для создания PVC для etcd
 
 ## Требования
 
 - Kubernetes 1.23+
 - kubectl с правами cluster-admin
 - 2GB+ свободной RAM для vCluster
-- vCluster CLI (устанавливается автоматически)
+- vCluster CLI (устанавливается дополнительно)
 
 ## Запуск
 
@@ -52,7 +53,7 @@ kubectl get crd | grep kafka
 # Отключиться от vCluster
 vcluster disconnect
 
-# Проверить что CRD не видны в host
+# Проверить что CRD не видны в хостовом кластере
 kubectl get crd | grep kafka
 # (пусто - изоляция работает)
 ```

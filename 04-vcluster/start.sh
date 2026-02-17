@@ -19,7 +19,7 @@ echo "=== Installing vCluster using Helm ==="
 SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 cd "$SCRIPT_DIR"
 
-# Creating local-path storage
+# Creating local-path storage with Rancher
 kubectl apply -f https://raw.githubusercontent.com/rancher/local-path-provisioner/master/deploy/local-path-storage.yaml
 
 # Add vCluster Helm repo
@@ -77,4 +77,6 @@ echo "  - Pods run in host cluster but managed by vCluster"
 echo ""
 echo "Note: Full vCluster testing requires vcluster CLI"
 echo "Install with: curl -s -L https://github.com/loft-sh/vcluster/releases/latest | sed -nE 's!.*\"([^\"]*vcluster-darwin-amd64)\".*!\\1!p' | xargs -I {} curl -L -o vcluster {} && chmod +x vcluster"
+echo "OR"
+echo "curl -L -o vcluster 'https://github.com/loft-sh/vcluster/releases/latest/download/vcluster-linux-amd64' && sudo install -c -m 0755 vcluster /usr/local/bin && rm -f vcluster"
 echo ""
