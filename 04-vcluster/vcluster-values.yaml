@@ -1,10 +1,13 @@
-# Storage configuration for the vcluster pod
-pod:
-  persistence: true
-  existingClaim: vcluster-data
-
-# Basic sync configuration
+# Sync configuration
 sync:
   toHost:
     pods:
       enabled: true
+
+# StatefulSet persistence configuration
+statefulSet:
+  persistence:
+    volumeClaim:
+      enabled: true
+      existingClaim: vcluster-data
+      size: 5Gi
