@@ -20,7 +20,7 @@ spec:
         - key: kubernetes.io/hostname
           operator: In
           values:
-          - ${NODE_NAME}
+          - Test_PV
 ---
 apiVersion: v1
 kind: PersistentVolumeClaim

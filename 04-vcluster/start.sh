@@ -14,9 +14,6 @@ helm repo update
 # Create namespace
 kubectl create namespace core-banking-vcluster --dry-run=client -o yaml | kubectl apply -f -
 
-# Get a node name
-NODE_NAME=$(kubectl get nodes -o jsonpath='{.items[0].metadata.name}')
-
 # Create PV and PVC for vCluster
 echo "=== Creating PersistentVolume and PersistentVolumeClaim ==="
 kubectl apply -f pvc-creation.yaml
