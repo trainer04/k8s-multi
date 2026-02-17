@@ -14,14 +14,17 @@ helm repo update
 # Create namespace
 kubectl create namespace core-banking-vcluster --dry-run=client -o yaml | kubectl apply -f -
 
-# Create PVC for vCluster
-echo "=== Creating PersistentVolumeClaim for vCluster ==="
+# Get a node name
+NODE_NAME=$(kubectl get nodes -o jsonpath='{.items[0].metadata.name}')
+
+# Create PV and PVC for vCluster
+echo "=== Creating PersistentVolume and PersistentVolumeClaim ==="
 kubectl apply -f pvc-creation.yaml
 
 # Wait for PVC to be bound
 echo "=== Waiting for PVC to be bound ==="
 for i in {1..30}; do
-    PVC_STATUS=$(kubectl get pvc vcluster-data -n core-banking-vcluster -o jsonpath='{.status.phase}' 2>/dev/null || echo "Pending")
+    PVC_STATUS=$(kubectl get pvc vcluster-data -n core-banking-vcluster -o jsonpath='{.status.phase}' 2>/dev/null)
     if [ "$PVC_STATUS" == "Bound" ]; then
         echo "PVC is bound"
         break
@@ -39,7 +42,7 @@ helm upgrade --install core-banking loft-sh/vcluster \
   --timeout 10m
 
 echo "=== Verification: Check vCluster pvc and pods==="
-kubectl get pods,pvc -n core-banking-vcluster
+kubectl get pv,pvc,pods -n core-banking-vcluster
 
 echo "=== Verification: Check vCluster service ==="
 kubectl get svc -n core-banking-vcluster
