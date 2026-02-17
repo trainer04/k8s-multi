@@ -1,0 +1,25 @@
+manager:
+  webhook:
+    port: 9443
+  options:
+    generateCertificates: true
+    
+# Enable webhooks
+webhooks:
+  namespace:
+    validating: true
+    mutating: true
+  tenant:
+    validating: true
+    
+certManager:
+  enabled: false  # Using self-signed certs
+
+# Additional settings
+resources:
+  limits:
+    cpu: 500m
+    memory: 256Mi
+  requests:
+    cpu: 100m
+    memory: 128Mi

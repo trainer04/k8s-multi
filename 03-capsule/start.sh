@@ -27,7 +27,9 @@ helm repo update
 helm upgrade --install capsule projectcapsule/capsule \
   --namespace capsule-system \
   --create-namespace \
-  --wait
+  --values capsule-values.yaml \
+  --wait \
+  --timeout 5m
 
 echo "=== Waiting for Capsule to be ready ==="
 kubectl wait --for=condition=available --timeout=120s deployment/capsule-controller-manager -n capsule-system
@@ -38,6 +40,11 @@ kubectl apply -f tenant-digital-channels.yaml
 kubectl apply -f tenant-analytics.yaml
 
 countdown 10
+
+echo ""
+echo "=== Creating ClusterRole and User ==="
+kubectl apply -f test-role.yaml
+kubectl apply -f test-user.yaml
 
 echo ""
 echo "=== Verification: Check Tenants ==="
