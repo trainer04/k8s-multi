@@ -1,14 +1,15 @@
 # vCluster configuration without persistent storage
-sync:
-  toHost:
-    pods:
-      enabled: true
-
-storage:
-  persistence: false
+syncer:
+  storage:
+    persistence: false
 
 controlPlane:
   backingStore:
     etcd:
       embedded:
         enabled: true
+
+sync:
+  toHost:
+    pods:
+      enabled: true
