@@ -10,15 +10,8 @@ controlPlane:
   # Backing store configuration
   backingStore:
     etcd:
-      deploy:
+      embedded:
         enabled: true
-        statefulSet:
-          resources:
-            requests:
-              cpu: 20m
-              memory: 150Mi
-          persistence:
-            enabled: false
 
 # Sync configuration (new schema)
 sync:
