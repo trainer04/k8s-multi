@@ -37,14 +37,17 @@ Capsule предоставляет полноценный multi-tenancy с ав�
 # Проверить Tenant
 kubectl get tenants
 
-# Проверить что namespace создаются автоматически
-kubectl --as=digital-user --as-group=capsule.clastix.io create ns mobile-app
+# Проверить метки
+kubectl get ns mobile-app --show-labels
 
-# Проверить автоматические квоты
-kubectl get resourcequota -n mobile-app
+# Проверить квоты тенанта по количеству namespaces
+kubectl get tenant digital-channels -o jsonpath='{.spec.namespaceOptions.quota}' | xargs echo "Quota:"
 
-# Проверить изоляцию
-kubectl --as=digital-user --as-group=capsule.clastix.io get ns
+# Проверить использование в тенанте
+kubectl get ns -l capsule.clastix.io/tenant=digital-channels --no-headers | wc -l | xargs echo "Count:"
+
+# Проверить квоты тенанта по ресурсам
+kubectl get tenant digital-channels -o yaml | grep -A 12 "resourceQuotas:"
 ```
 
 ## Остановка
