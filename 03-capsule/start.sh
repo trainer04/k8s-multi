@@ -2,7 +2,22 @@
 
 set -e
 
+countdown() {
+    local seconds=$1
+    local message=${2:-"Waiting"}
+    
+    while [ $seconds -gt 0 ]; do
+        echo -ne "${message}: ${seconds}s remaining...\r"
+        sleep 1
+        ((seconds--))
+    done
+    echo -e "${message}: done!          \r"
+}
+
 echo "=== Installing Capsule ==="
+
+SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
+cd "$SCRIPT_DIR"
 
 # Add Capsule Helm repo
 helm repo add projectcapsule https://projectcapsule.github.io/charts
@@ -22,7 +37,7 @@ echo "=== Creating Tenants ==="
 kubectl apply -f tenant-digital-channels.yaml
 kubectl apply -f tenant-analytics.yaml
 
-sleep 5
+countdown 10
 
 echo ""
 echo "=== Verification: Check Tenants ==="
@@ -38,7 +53,7 @@ kubectl create ns mobile-app --dry-run=client -o yaml | \
   kubectl label --local=true -f - capsule.clastix.io/tenant=digital-channels -o yaml | \
   kubectl apply -f -
 echo "SUCCESS: Namespace created and assigned to tenant"
-sleep 3
+countdown 10
 kubectl get ns mobile-app --show-labels
 echo ""
 
@@ -60,7 +75,7 @@ echo ""
 
 echo "=== Test 5: Create pod in tenant namespace ==="
 kubectl run test-pod --image=nginx -n mobile-app && echo "SUCCESS: Pod created" || echo "Pod already exists"
-sleep 5
+countdown 10
 kubectl get pods -n mobile-app
 echo ""
 
