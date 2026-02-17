@@ -1,20 +1,14 @@
-# vCluster configuration for Core Banking team
-# Using minimal configuration compatible with latest vCluster
-
-# Control plane configuration
-controlPlane:
-  # CoreDNS inside vCluster
-  coredns:
-    enabled: true
-
-  # Backing store configuration
-  backingStore:
-    etcd:
-      embedded:
-        enabled: true
-
-# Sync configuration (new schema)
+# vCluster configuration without persistent storage
 sync:
   toHost:
     pods:
       enabled: true
+
+storage:
+  persistence: false
+
+controlPlane:
+  backingStore:
+    etcd:
+      embedded:
+        enabled: true
