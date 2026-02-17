@@ -2,18 +2,6 @@
 
 set -e
 
-countdown() {
-    local seconds=$1
-    local message=${2:-"Waiting"}
-    
-    while [ $seconds -gt 0 ]; do
-        echo -ne "${message}: ${seconds}s remaining...\r"
-        sleep 1
-        ((seconds--))
-    done
-    echo -e "${message}: done!          \r"
-}
-
 SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 cd "$SCRIPT_DIR"
 
@@ -26,17 +14,32 @@ helm repo update
 # Create namespace
 kubectl create namespace core-banking-vcluster --dry-run=client -o yaml | kubectl apply -f -
 
-# Install vCluster using Helm
+# Create PVC for vCluster
+echo "=== Creating PersistentVolumeClaim for vCluster ==="
+kubectl apply -f pvc-creation.yaml
+
+# Wait for PVC to be bound
+echo "=== Waiting for PVC to be bound ==="
+for i in {1..30}; do
+    PVC_STATUS=$(kubectl get pvc vcluster-data -n core-banking-vcluster -o jsonpath='{.status.phase}' 2>/dev/null || echo "Pending")
+    if [ "$PVC_STATUS" == "Bound" ]; then
+        echo "? PVC is bound"
+        break
+    fi
+    echo "Waiting for PVC to be bound... (${i}/30)"
+    sleep 5
+done
+
+# Install vCluster with the PVC
 echo "=== Creating vCluster ==="
 helm upgrade --install core-banking loft-sh/vcluster \
   --namespace core-banking-vcluster \
   --values vcluster-values.yaml \
-  --wait
+  --wait \
+  --timeout 10m
 
-echo "=== Waiting for vCluster to be ready ==="
-kubectl wait --for=condition=ready --timeout=300s pod -l app=vcluster -n core-banking-vcluster
-
-countdown 10
+echo "=== Verification ==="
+kubectl get pods,pvc -n core-banking-vcluster
 
 echo ""
 echo "=== Verification: Check vCluster pods ==="

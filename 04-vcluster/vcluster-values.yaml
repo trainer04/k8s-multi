@@ -1,14 +1,14 @@
+# Use existing PVC for persistence
+persistence:
+  enabled: true
+  existingClaim: vcluster-data
+
+# Use embedded etcd to avoid additional PVCs
+embeddedEtcd:
+  enabled: true
+
+# Basic sync configuration
 sync:
   toHost:
     pods:
-      enabled: true
-    services:
-      enabled: true
-    configMaps:
-      enabled: true
-      all: false
-    secrets:
-      enabled: true
-      all: false
-    persistentVolumeClaims:
       enabled: true
