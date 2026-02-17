@@ -1,13 +1,11 @@
-# Sync configuration
+# Sync configuration only
 sync:
   toHost:
     pods:
       enabled: true
-
-# StatefulSet persistence configuration
-statefulSet:
-  persistence:
-    volumeClaim:
+    services:
       enabled: true
-      existingClaim: vcluster-data
-      size: 5Gi
+    configMaps:
+      enabled: true
+    secrets:
+      enabled: true
