@@ -36,7 +36,7 @@ helm upgrade --install core-banking loft-sh/vcluster \
 echo "=== Waiting for vCluster to be ready ==="
 kubectl wait --for=condition=ready --timeout=300s pod -l app=vcluster -n core-banking-vcluster
 
-sleep 5
+countdown 10
 
 echo ""
 echo "=== Verification: Check vCluster pods ==="
