@@ -1,15 +1,28 @@
 # vCluster configuration without persistent storage
-syncer:
-  storage:
-    persistence: false
-
-controlPlane:
-  backingStore:
-    etcd:
-      embedded:
-        enabled: true
-
 sync:
   toHost:
     pods:
       enabled: true
+    services:
+      enabled: true
+    configMaps:
+      enabled: true
+      all: false
+    secrets:
+      enabled: true
+      all: false
+    persistentVolumeClaims:
+      enabled: true
+
+embeddedEtcd:
+  enabled: true
+
+pod:
+  persistence: false
+  resources:
+    requests:
+      cpu: 200m
+      memory: 256Mi
+    limits:
+      cpu: 1
+      memory: 1Gi
