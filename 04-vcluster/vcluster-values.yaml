@@ -3,10 +3,6 @@ persistence:
   enabled: true
   existingClaim: vcluster-data
 
-# Use embedded etcd to avoid additional PVCs
-embeddedEtcd:
-  enabled: true
-
 # Basic sync configuration
 sync:
   toHost:
